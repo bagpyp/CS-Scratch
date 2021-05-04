@@ -41,7 +41,7 @@ namespace Scratch
             else
                 {}
         }
-
+        // static methods
         public static void CreateFriendship(Person p1, Person p2) 
         {
             p1.Befriend(p2);
