@@ -1,0 +1,16 @@
+/home/robbie/Scratch/bin/Debug/net5.0/Scratch
+/home/robbie/Scratch/bin/Debug/net5.0/Scratch.deps.json
+/home/robbie/Scratch/bin/Debug/net5.0/Scratch.runtimeconfig.json
+/home/robbie/Scratch/bin/Debug/net5.0/Scratch.runtimeconfig.dev.json
+/home/robbie/Scratch/bin/Debug/net5.0/Scratch.dll
+/home/robbie/Scratch/bin/Debug/net5.0/ref/Scratch.dll
+/home/robbie/Scratch/bin/Debug/net5.0/Scratch.pdb
+/home/robbie/Scratch/obj/Debug/net5.0/Scratch.csprojAssemblyReference.cache
+/home/robbie/Scratch/obj/Debug/net5.0/Scratch.GeneratedMSBuildEditorConfig.editorconfig
+/home/robbie/Scratch/obj/Debug/net5.0/Scratch.AssemblyInfoInputs.cache
+/home/robbie/Scratch/obj/Debug/net5.0/Scratch.AssemblyInfo.cs
+/home/robbie/Scratch/obj/Debug/net5.0/Scratch.csproj.CoreCompileInputs.cache
+/home/robbie/Scratch/obj/Debug/net5.0/Scratch.dll
+/home/robbie/Scratch/obj/Debug/net5.0/ref/Scratch.dll
+/home/robbie/Scratch/obj/Debug/net5.0/Scratch.pdb
+/home/robbie/Scratch/obj/Debug/net5.0/Scratch.genruntimeconfig.cache
