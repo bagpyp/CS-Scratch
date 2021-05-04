@@ -8,19 +8,19 @@
     "net5.0": []
   },
   "packageFolders": {
-    "/home/robbie/.nuget/packages/": {}
+    "/home/hillcrest/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/robbie/Scratch/Scratch.csproj",
+      "projectUniqueName": "/home/hillcrest/CS-Scratch/Scratch.csproj",
       "projectName": "Scratch",
-      "projectPath": "/home/robbie/Scratch/Scratch.csproj",
-      "packagesPath": "/home/robbie/.nuget/packages/",
-      "outputPath": "/home/robbie/Scratch/obj/",
+      "projectPath": "/home/hillcrest/CS-Scratch/Scratch.csproj",
+      "packagesPath": "/home/hillcrest/.nuget/packages/",
+      "outputPath": "/home/hillcrest/CS-Scratch/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/robbie/.nuget/NuGet/NuGet.Config"
+        "/home/hillcrest/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
