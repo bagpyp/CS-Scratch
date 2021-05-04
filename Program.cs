@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Net;
-using System.Runtime.Serialization;
 
 namespace Scratch
 {    class Program
@@ -20,17 +17,31 @@ namespace Scratch
             }
             var stranger = new Person();
             stranger.Befriend(corey);
-            
+            corey.Unfriend(heather);
             var people = new List<Person>() {robbie, heather, corey, stranger};
             var group = new Group(people);
 
             group.Show();
 
-            Console.WriteLine();
             foreach (Person p in people)
             {
                 p.Introduce();
-            }
+            };
+            
+            var graph = new int[3,3] 
+            {
+                {0,1,1},
+                {1,0,0},
+                {1,1,0}
+            };
+            var names = new List<String> {"Gavin", "Scott", "Robbie"};
+            var group2 = new Group(graph, names);
+
+            group2.Show();
+            foreach (Person p in group2.People)
+            {
+                p.Introduce();
+            };
         }
     }
 }
