@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/hillcrest/CS-Scratch/Scratch.csproj": {}
+    "/home/robbie/Scratch/Scratch.csproj": {}
   },
   "projects": {
-    "/home/hillcrest/CS-Scratch/Scratch.csproj": {
+    "/home/robbie/Scratch/Scratch.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/hillcrest/CS-Scratch/Scratch.csproj",
+        "projectUniqueName": "/home/robbie/Scratch/Scratch.csproj",
         "projectName": "Scratch",
-        "projectPath": "/home/hillcrest/CS-Scratch/Scratch.csproj",
-        "packagesPath": "/home/hillcrest/.nuget/packages/",
-        "outputPath": "/home/hillcrest/CS-Scratch/obj/",
+        "projectPath": "/home/robbie/Scratch/Scratch.csproj",
+        "packagesPath": "/home/robbie/.nuget/packages/",
+        "outputPath": "/home/robbie/Scratch/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/hillcrest/.nuget/NuGet/NuGet.Config"
+          "/home/robbie/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

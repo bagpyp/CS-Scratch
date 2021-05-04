@@ -6,8 +6,8 @@ namespace Scratch
     {
         static void Main(string[] args)
         {
-            var group = new Group("Robbie", "Heather");
-            group.ListMembers();
+            var group = new Group("a","b");
+            group.Show();
         }
     }
 }
