@@ -12,15 +12,15 @@ namespace Scratch
         // methods
         public void Introduce() 
         {
-            Console.WriteLine($"My name is {this.Name},");
-            if (this.Friends != null) 
+            Console.WriteLine($"\nMy name is {this.Name},");
+            if (this.Friends != null && this.Friends.Count != 0) 
             {
-                System.Console.WriteLine("My friends are");
+                Console.WriteLine("My friends are");
                 this.Friends.ForEach(f => Console.WriteLine($"\t{f.Name}"));
             } 
             else 
             {
-                System.Console.WriteLine("I have no friends...");
+                Console.WriteLine("I have no friends...");
             }
         }
         public void Befriend(Person p) 
