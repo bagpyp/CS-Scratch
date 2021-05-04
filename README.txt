@@ -6,7 +6,7 @@ Groups can have people and their relationships.
 
 ## Create groups one frined at a time
 
-```cs
+```csharp
 var robbie = new Person("Robbie");
 var heather = new Person("Heather");
 Person.CreateFriendship(robbie, heather);
@@ -43,7 +43,7 @@ My friends are
 
 # Create the group and the friendship topology all at once
 
-```cs
+```csharp
 var graph = new int[3,3] 
 {
 	{0,1,1},
