@@ -1,8 +1,10 @@
-# Friendsbook 
+# Friend Machine
   
 Classes to manage friendships between groups,  
 People can have one-directional friendships and names,  
 Groups can have people and their relationships.   
+  
+![Screenshot](screen.png)  
   
 ## Create groups one frined at a time 
   
