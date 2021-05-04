@@ -50,5 +50,21 @@ namespace Scratch
                 }
             }
         }   
+        public Group(List<Person> people)
+        {
+            this.People = people;
+            int k = people.Count;
+            this.Graph = new bool[k,k];
+            for (int i = 0; i < k; i++) 
+            {
+                for (int j = 0; j < k; j++) 
+                {
+                    if (people[i].Friends.Contains(people[j])) 
+                        this.Graph[i,j] = true;
+                    else
+                        this.Graph[i,j] = false;
+                }
+            }
+        }   
     }
 }
