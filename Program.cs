@@ -42,6 +42,14 @@ namespace Scratch
             {
                 p.Introduce();
             };
+
+            var savannah = new Person("Savannah");
+            group2.AddPerson(savannah);
+            group2.Show();
+
+            corey.Befriend(savannah);
+            group2.AddPerson(corey);
+            group2.Show();
         }
     }
 }

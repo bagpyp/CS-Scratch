@@ -10,13 +10,21 @@ namespace Scratch
         // methods
         public void ListMembers() 
         {
+            Console.WriteLine();
             this.People.ForEach(p => Console.WriteLine(p.Name));
+        }
+        public int Size() 
+        {
+            if (this.People == null)
+                return 0;
+            else
+                return this.People.Count;
         }
         public void Show()
         {
             this.ListMembers();
             Console.WriteLine();
-            int k = this.Graph.GetLength(0);
+            int k = this.Size();
             for (int i = 0; i < k; i++) 
             {
                 for (int j = 0; j < k; j++) 
@@ -27,6 +35,38 @@ namespace Scratch
                 Console.Write("\n");
             }
         }
+        public void AddPerson(Person p)
+        {
+            int k = this.Size();
+            this.People.Add(p);
+            var newGraph = new int[k+1,k+1];
+            for (int i = 0; i < k; i++)
+            {
+                for (int j = 0; j < k; j++)
+                {
+                    newGraph[i,j] = this.Graph[i,j];
+                }
+                newGraph[i,k] = 0;  
+                newGraph[k,i] = 0;  
+            }
+            this.Graph = newGraph;
+            this.RenderGraph();
+        }
+        public void RenderGraph()
+        {
+            int k = this.Size();
+            for (int i = 0; i < k; i++) 
+            {
+                for (int j = 0; j < k; j++) 
+                {
+                    if (this.People[i].Friends != null && this.People[i].Friends.Contains(this.People[j])) 
+                        this.Graph[i,j] = 1;
+                    else
+                        this.Graph[i,j] = 0;
+                }
+            }
+        }
+
         // constructors
         public Group(params string[] names)
         {
