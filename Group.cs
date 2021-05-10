@@ -1,5 +1,10 @@
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Scratch 
 {
@@ -11,25 +16,21 @@ namespace Scratch
         public void ListMembers() 
         {
             Console.WriteLine();
-            this.People.ForEach(p => Console.WriteLine(p.Name));
-        }
-        public int Size() 
-        {
-            if (this.People == null)
-                return 0;
-            else
-                return this.People.Count;
+            People.ForEach(p => Console.WriteLine(p.Name));
         }
         public void Show()
         {
-            this.ListMembers();
+            ListMembers();
             Console.WriteLine();
-            int k = this.Size();
+            int k = Size();
             for (int i = 0; i < k; i++) 
             {
                 for (int j = 0; j < k; j++) 
                 {
-                    Console.Write(this.Graph[i,j]);
+                    if (i!=j)
+                        Console.Write(Graph[i,j]);
+                    else
+                        Console.Write($"{(char)215}");
                     Console.Write(" ");
                 }
                 Console.Write("\n");
@@ -37,69 +38,106 @@ namespace Scratch
         }
         public void AddPerson(Person p)
         {
-            int k = this.Size();
-            this.People.Add(p);
+            int k = Size();
+            People.Add(p);
             var newGraph = new int[k+1,k+1];
-            for (int i = 0; i < k; i++)
+            Graph = newGraph;
+            RenderGraph();
+        }
+        public void RandomizeFriendships() 
+        {
+            int k = Size();
+            var rand = new Random();
+            for (int i = 0; i < k; i++) 
             {
-                for (int j = 0; j < k; j++)
+                for (int j = i+1; j < k; j++) 
                 {
-                    newGraph[i,j] = this.Graph[i,j];
+                    var randInt = rand.Next(0,100);
+                    // simulate a 30% friendship rate
+                    if (randInt > 69 && randInt < 95)
+                    {
+                        Graph[i,j] = 1;
+                        Graph[j,i] = 1;
+                    }
+                    // simulate a 5% non-reciprical friendship rate
+                    else if (randInt > 94)
+                    {
+                        var randBit = rand.Next(0,2);
+                        Graph[i,j] = randBit;
+                        Graph[j,i] = randBit ^ 1;
+                    }
                 }
-                newGraph[i,k] = 0;  
-                newGraph[k,i] = 0;  
             }
-            this.Graph = newGraph;
-            this.RenderGraph();
+            RenderPeople();
         }
         public void RenderGraph()
         {
-            int k = this.Size();
+            int k = Size();
             for (int i = 0; i < k; i++) 
             {
                 for (int j = 0; j < k; j++) 
                 {
-                    if (this.People[i].Friends != null && this.People[i].Friends.Contains(this.People[j])) 
-                        this.Graph[i,j] = 1;
+                    if (People[i].Friends != null && People[i].Friends.Contains(People[j])) 
+                        Graph[i,j] = 1;
                     else
-                        this.Graph[i,j] = 0;
+                        Graph[i,j] = 0;
                 }
             }
         }
 
+        public void RenderPeople()
+        {
+            int k = Size();
+            for (int i = 0; i < k; i++) 
+            {
+                for (int j = 0; j < k; j++) 
+                {
+                    if (i!=j && Graph[i,j] == 1) 
+                        People[i].Befriend(People[j]);
+                }
+            }
+        }
+        public int Size()
+        {
+            if (People == null)
+                return 0;
+            else
+                return People.Count;
+        }
         // constructors
-        public Group(params string[] names)
+        public Group(string[] names)
+        // Create a Group from a list of names where no friendships exist
         {
             int k = names.Length;
             foreach (string n in names) 
             {
-            if (this.People == null)
-                this.People = new List<Person> {new Person(n)};
+            if (People == null)
+                People = new List<Person> {new Person(n)};
             else 
-                this.People.Add(new Person(n));
+                People.Add(new Person(n));
             }
-            this.Graph = new int[k,k];
+            Graph = new int[k,k];
             for (int i = 0; i < k; i++) 
             {
                 for (int j = 0; j < k; j++) 
                 {
-                    this.Graph[i,j] = 0;
+                    Graph[i,j] = 0;
                 }
             }
         }   
 
-        public Group(int[,] graph, List<String> names)
+        public Group(int[,] graph, string[] names)
+        //  Create a Group from a list of names with friendship topology provided
         {   
-            this.Graph = graph;
-            // create the people from the list of names
+            Graph = graph;
             foreach (string n in names) 
             {
-            if (this.People == null)
-                this.People = new List<Person> {new Person(n)};
+            if (People == null)
+                People = new List<Person> {new Person(n)};
             else 
-                this.People.Add(new Person(n));
+                People.Add(new Person(n));
             }
-            int k = names.Count;
+            int k = names.Length;
             // use the graph to make friendships
             for (int i = 0; i < k; i++)
             {
@@ -107,27 +145,78 @@ namespace Scratch
                 {
                     if (graph[i,j] == 1)
                     {
-                        this.People[i].Befriend(this.People[j]);
+                        People[i].Befriend(People[j]);
                     }
                 }    
             }
         }   
         
         public Group(List<Person> people)
+        // Create a group from a list of people, infer friendship topology
         {
-            this.People = people;
+            People = people;
             int k = people.Count;
-            this.Graph = new int[k,k];
+            Graph = new int[k,k];
             for (int i = 0; i < k; i++) 
             {
                 for (int j = 0; j < k; j++) 
                 {
                     if (people[i].Friends != null && people[i].Friends.Contains(people[j])) 
-                        this.Graph[i,j] = 1;
+                        Graph[i,j] = 1;
                     else
-                        this.Graph[i,j] = 0;
+                        Graph[i,j] = 0;
                 }
             }
-        }   
+        } 
+
+        // Helpers
+        public static async Task<Group> GetGroupAsync(int groupSize)
+        {
+            using (var client = new HttpClient())
+            {
+                var uri = $"https://www.randomuser.me/api/?inc=name&results={groupSize}";
+                var stringTask = client.GetStringAsync(uri);
+                var stringResponse = await stringTask;
+                Root response = JsonConvert.DeserializeObject<Root>(stringResponse);
+                var people = new List<Person>(); 
+                response.results.ForEach(
+                    res => people.Add(new Person(res.name.ToFullName()))
+                );
+                return new Group(people);
+            }
+        }
+
+        public class Name
+        {
+            public string title { get; set; }
+            public string first { get; set; }
+            public string last { get; set; }
+            public string ToFullName() 
+            {
+                string output = first + " " + last;
+                if (title != null) 
+                    output = title + " " + output;
+                return output;
+            }
+        }
+
+        public class Result
+        {
+            public Name name { get; set; }
+        }
+
+        public class Info
+        {
+            public string seed { get; set; }
+            public int results { get; set; }
+            public int page { get; set; }
+            public string version { get; set; }
+        }
+
+        public class Root
+        {
+            public List<Result> results { get; set; }
+            public Info info { get; set; }
+        }  
     }
 }

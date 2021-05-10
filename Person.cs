@@ -6,6 +6,8 @@ namespace Scratch
     public class Person 
     {
         // attributes
+        // public int Id { get; set; }
+        // public string ImageUrl { get; set; }
         public string Name { get; set; }
         public List<Person> Friends { get; set; }
 
