@@ -1,24 +1,29 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+#nullable enable
 
 namespace Scratch 
 {
     public class Person 
     {
         // attributes
-        // public int Id { get; set; }
-        // public string ImageUrl { get; set; }
+        public int Id { get; set; }
+        [MaxLength(100)]
         public string Name { get; set; }
-        public List<Person> Friends { get; set; }
+        public List<Person> Friends { get; set; } = new();
+        public int PersonId { get; set; }
+        // public Group? Group { get; set; }
+        // public int GroupId { get; set; }
 
         // methods
         public void Introduce() 
         {
-            Console.WriteLine($"\nMy name is {this.Name},");
-            if (this.Friends != null && this.Friends.Count != 0) 
+            Console.WriteLine($"\nMy name is {Name},");
+            if (Friends.Count != 0) 
             {
                 Console.WriteLine("My friends are");
-                this.Friends.ForEach(f => Console.WriteLine($"\t{f.Name}"));
+                Friends.ForEach(f => Console.WriteLine($"\t{f.Name}"));
             } 
             else 
             {
@@ -27,21 +32,13 @@ namespace Scratch
         }
         public void Befriend(Person p) 
         {
-            if (this.Friends == null) 
-                this.Friends = new List<Person>() {p};
-            else if (this.Friends.Contains(p))
-                {}
-            else
-                this.Friends.Add(p);
+            if (!Friends.Contains(p))
+                Friends.Add(p);                
         }
         public void Unfriend(Person p) 
         {   
-            if (this.Friends == null) 
-                {}
-            else if (this.Friends.Contains(p))
-                this.Friends.Remove(p);
-            else
-                {}
+            if (!Friends.Contains(p))
+                Friends.Remove(p);
         }
         // stativ methods
         public static void CreateFriendship(Person p1, Person p2) 
@@ -57,11 +54,11 @@ namespace Scratch
         // constructors
         public Person()
         {
-            this.Name = "Stranger";
+            Name = "Stranger";
         }
         public Person(string name)
         {
-            this.Name = name;
+            Name = name;
         }
     }
 }

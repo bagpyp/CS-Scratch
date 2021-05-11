@@ -3,16 +3,23 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
-using System.Security.Cryptography.X509Certificates;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scratch 
 {
     public class Group
     {
-        public List<Person> People { get; set; }
+        public int Id { get; set; }
+        public List<Person> People { get; set; } = new();
+
+        [NotMapped]
         public int[,] Graph { get; set; } 
+
         // methods
+        public int Count() 
+        {
+            return People.Count;
+        }
         public void ListMembers() 
         {
             Console.WriteLine();
@@ -22,10 +29,9 @@ namespace Scratch
         {
             ListMembers();
             Console.WriteLine();
-            int k = Size();
-            for (int i = 0; i < k; i++) 
+            for (int i = 0; i < Count(); i++) 
             {
-                for (int j = 0; j < k; j++) 
+                for (int j = 0; j < Count(); j++) 
                 {
                     if (i!=j)
                         Console.Write(Graph[i,j]);
@@ -38,19 +44,17 @@ namespace Scratch
         }
         public void AddPerson(Person p)
         {
-            int k = Size();
             People.Add(p);
-            var newGraph = new int[k+1,k+1];
+            var newGraph = new int[Count()+1,Count()+1];
             Graph = newGraph;
             RenderGraph();
         }
         public void RandomizeFriendships() 
         {
-            int k = Size();
             var rand = new Random();
-            for (int i = 0; i < k; i++) 
+            for (int i = 0; i < Count(); i++) 
             {
-                for (int j = i+1; j < k; j++) 
+                for (int j = i+1; j < Count(); j++) 
                 {
                     var randInt = rand.Next(0,100);
                     // simulate a 30% friendship rate
@@ -72,13 +76,15 @@ namespace Scratch
         }
         public void RenderGraph()
         {
-            int k = Size();
-            for (int i = 0; i < k; i++) 
+            for (int i = 0; i < Count(); i++) 
             {
-                for (int j = 0; j < k; j++) 
+                for (int j = 0; j < Count(); j++) 
                 {
-                    if (People[i].Friends != null && People[i].Friends.Contains(People[j])) 
+                    
+                    if (People[i].Friends.Contains(People[j]))
+                    {
                         Graph[i,j] = 1;
+                    }
                     else
                         Graph[i,j] = 0;
                 }
@@ -87,22 +93,14 @@ namespace Scratch
 
         public void RenderPeople()
         {
-            int k = Size();
-            for (int i = 0; i < k; i++) 
+            for (int i = 0; i < Count(); i++) 
             {
-                for (int j = 0; j < k; j++) 
+                for (int j = 0; j < Count(); j++) 
                 {
                     if (i!=j && Graph[i,j] == 1) 
                         People[i].Befriend(People[j]);
                 }
             }
-        }
-        public int Size()
-        {
-            if (People == null)
-                return 0;
-            else
-                return People.Count;
         }
         // constructors
         public Group(string[] names)
@@ -111,10 +109,7 @@ namespace Scratch
             int k = names.Length;
             foreach (string n in names) 
             {
-            if (People == null)
-                People = new List<Person> {new Person(n)};
-            else 
-                People.Add(new Person(n));
+            People.Add(new Person(n));
             }
             Graph = new int[k,k];
             for (int i = 0; i < k; i++) 
@@ -132,13 +127,10 @@ namespace Scratch
             Graph = graph;
             foreach (string n in names) 
             {
-            if (People == null)
-                People = new List<Person> {new Person(n)};
-            else 
-                People.Add(new Person(n));
+            People.Add(new Person(n));
             }
             int k = names.Length;
-            // use the graph to make friendships
+            // use the graph to maCount()e friendships
             for (int i = 0; i < k; i++)
             {
                 for (int j = 0; j < k; j++)
@@ -161,7 +153,7 @@ namespace Scratch
             {
                 for (int j = 0; j < k; j++) 
                 {
-                    if (people[i].Friends != null && people[i].Friends.Contains(people[j])) 
+                    if (i!=j && people[i].Friends.Contains(people[j])) 
                         Graph[i,j] = 1;
                     else
                         Graph[i,j] = 0;
@@ -194,8 +186,6 @@ namespace Scratch
             public string ToFullName() 
             {
                 string output = first + " " + last;
-                if (title != null) 
-                    output = title + " " + output;
                 return output;
             }
         }

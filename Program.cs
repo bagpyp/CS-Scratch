@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Scratch
 {
@@ -6,11 +9,15 @@ namespace Scratch
     {
         static async Task Main(string[] args)
         {
-            var groupTask = Group.GetGroupAsync(10);
+            int k;
+            if (args.Length > 0)
+                k = Int32.Parse(args[0]);
+            else
+                k = 3;
+            var groupTask = Group.GetGroupAsync(k);
             var group = await groupTask;
             group.RandomizeFriendships();
-            group.Show();
-            group.People.ForEach(p => p.Introduce());
+            group.Show();            
         }
     }
 }
