@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 #nullable enable
 
 namespace Scratch 
@@ -12,7 +13,12 @@ namespace Scratch
         [MaxLength(100)]
         public string Name { get; set; }
         public List<Person> Friends { get; set; } = new();
-        public int PersonId { get; set; }
+
+        [ForeignKey("Id")]
+        public int OtherPersonId { get; set; }
+        public Person OtherPerson { get; set; }
+
+        // public int PersonId { get; set; }
         // public Group? Group { get; set; }
         // public int GroupId { get; set; }
 

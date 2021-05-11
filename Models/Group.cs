@@ -9,10 +9,10 @@ namespace Scratch
 {
     public class Group
     {
-        public int Id { get; set; }
+        // public int Id { get; set; }
         public List<Person> People { get; set; } = new();
 
-        [NotMapped]
+        // [NotMapped]
         public int[,] Graph { get; set; } 
 
         // methods
