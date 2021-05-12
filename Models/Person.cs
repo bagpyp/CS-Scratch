@@ -7,21 +7,11 @@ namespace Scratch
 {
     public class Person
     {
-        // attributes
         public int Id { get; set; }
         [MaxLength(100)]
         public string Name { get; set; }
         public List<Friendship> Friendships { get; set; } = new();
         public List<Friendship> FriendshipsFrom { get; set; } = new();
-
-        // [ForeignKey("Id")]
-        // public int OtherPersonId { get; set; }
-        // public Person OtherPerson { get; set; }
-        // public int PersonId { get; set; }
-        // public Group? Group { get; set; }
-        // public int GroupId { get; set; }
-
-        // methods
         public void Introduce() 
         {
             Console.WriteLine($"\nMy name is {Name},");
@@ -68,11 +58,11 @@ namespace Scratch
             Name = name;
         }
     }
-
+    // join table entity
     public class Friendship 
     {
+        [Key]
         public int Id { get; set; }
-
         public virtual Person Person { get; set; }
         public int PersonId { get; set; }
         public int OtherPersonId {get; set; }

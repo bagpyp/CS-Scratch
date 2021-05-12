@@ -21,7 +21,9 @@ namespace Scratch.Migrations
             modelBuilder.Entity("Scratch.Friendship", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("OtherPersonId")
                         .HasColumnType("integer");
@@ -32,6 +34,8 @@ namespace Scratch.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OtherPersonId");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Friendships");
                 });
@@ -54,15 +58,15 @@ namespace Scratch.Migrations
 
             modelBuilder.Entity("Scratch.Friendship", b =>
                 {
-                    b.HasOne("Scratch.Person", "Person")
+                    b.HasOne("Scratch.Person", "OtherPerson")
                         .WithMany("FriendshipsFrom")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("OtherPersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Scratch.Person", "OtherPerson")
+                    b.HasOne("Scratch.Person", "Person")
                         .WithMany("Friendships")
-                        .HasForeignKey("OtherPersonId")
+                        .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

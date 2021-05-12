@@ -7,42 +7,31 @@ namespace Scratch
 {
     public class ScratchContext : DbContext
     {
-        // public DbSet<Group> Groups { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         { 
-            // what the actual fuck
-
+            // implement a self-referential many-to-many relationship in db
+            // builder.Entity<Friendship>()
+            //     .HasKey(f => new { f.PersonId, f.OtherPersonId });
             builder.Entity<Friendship>()
                 .HasOne<Person>(f => f.Person)
-                .WithMany(p => p.FriendshipsFrom)
-                .HasForeignKey(f => f.Id);
+                .WithMany(p => p.Friendships)
+                .HasForeignKey(f => f.PersonId);
             builder.Entity<Friendship>()
                 .HasOne<Person>(f => f.OtherPerson)
-                .WithMany(s => s.Friendships)
+                .WithMany(s => s.FriendshipsFrom)
                 .HasForeignKey(f => f.OtherPersonId);
-
-            // builder.Entity<Friendship>()
-            //     .HasOne(xy => xy.OtherPerson)
-            //     .WithMany(x => x.Friendships)
-            //     .HasForeignKey(xy => xy.PersonId)
-            //     .OnDelete(DeleteBehavior.NoAction);
-
-            // builder.Entity<Friendship>()
-            //     .HasOne(xy => xy.Person)
-            //     .WithMany(y => y.Friendships)
-            //     .HasForeignKey(xy => xy.OtherPersonId);
-
         }
         public ScratchContext(DbContextOptions<ScratchContext> options)
             : base(options)
-        {}
+        { }
     }
     public class ScratchContextFactory : IDesignTimeDbContextFactory<ScratchContext>
     {
         public ScratchContext CreateDbContext(string[] args)
         {
+            
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<ScratchContext>();

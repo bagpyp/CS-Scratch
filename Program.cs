@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Scratch
 {
@@ -12,7 +13,10 @@ namespace Scratch
 
             var factory = new ScratchContextFactory();
             using var context = factory.CreateDbContext(args);
-
+            
+            context.Persons.RemoveRange(context.Persons);
+            context.Friendships.RemoveRange(context.Friendships);
+            
             int k;
             if (args.Length > 0)
                 k = Int32.Parse(args[0]);
@@ -23,13 +27,18 @@ namespace Scratch
 
             group.RandomizeFriendships();
             
-            // foreach (Person p in group.People) 
-            // {
-            //     context.Add(p);
-            // }
-            // await context.SaveChangesAsync();
+            foreach (Person p in group.People) 
+            {
+                await context.AddAsync(p);
+            }
+            await context.SaveChangesAsync();
+
             group.Show();
-            // Console.WriteLine($"\n{k} people successfully added to database");
+
+            foreach (Person p in context.Persons.OrderBy(p => p.Id)) 
+            {
+                p.Introduce();
+            }
         }
     }
 }
