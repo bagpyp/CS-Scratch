@@ -2,22 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-#nullable enable
 
 namespace Scratch 
 {
-    public class Person 
+    public class Person
     {
         // attributes
         public int Id { get; set; }
         [MaxLength(100)]
         public string Name { get; set; }
-        public List<Person> Friends { get; set; } = new();
+        public List<Friendship> Friendships { get; set; } = new();
+        public List<Friendship> FriendshipsFrom { get; set; } = new();
 
-        [ForeignKey("Id")]
-        public int OtherPersonId { get; set; }
-        public Person OtherPerson { get; set; }
-
+        // [ForeignKey("Id")]
+        // public int OtherPersonId { get; set; }
+        // public Person OtherPerson { get; set; }
         // public int PersonId { get; set; }
         // public Group? Group { get; set; }
         // public int GroupId { get; set; }
@@ -26,10 +25,10 @@ namespace Scratch
         public void Introduce() 
         {
             Console.WriteLine($"\nMy name is {Name},");
-            if (Friends.Count != 0) 
+            if (Friendships.Count != 0) 
             {
                 Console.WriteLine("My friends are");
-                Friends.ForEach(f => Console.WriteLine($"\t{f.Name}"));
+                Friendships.ForEach(f => Console.WriteLine($"\t{f.OtherPerson.Name}"));
             } 
             else 
             {
@@ -38,13 +37,15 @@ namespace Scratch
         }
         public void Befriend(Person p) 
         {
-            if (!Friends.Contains(p))
-                Friends.Add(p);                
+            var f = new Friendship(this, p);
+            if (!Friendships.Contains(f))
+                Friendships.Add(f);                
         }
         public void Unfriend(Person p) 
         {   
-            if (!Friends.Contains(p))
-                Friends.Remove(p);
+            var f = new Friendship(this, p);
+            if (!Friendships.Contains(f))
+                Friendships.Remove(f);
         }
         // stativ methods
         public static void CreateFriendship(Person p1, Person p2) 
@@ -65,6 +66,28 @@ namespace Scratch
         public Person(string name)
         {
             Name = name;
+        }
+    }
+
+    public class Friendship 
+    {
+        public int Id { get; set; }
+
+        public virtual Person Person { get; set; }
+        public int PersonId { get; set; }
+        public int OtherPersonId {get; set; }
+
+        public virtual Person OtherPerson { get; set; }
+
+        public Friendship() 
+        {
+            
+        }
+
+        public Friendship(Person p1, Person p2)
+        {
+            Person = p1;
+            OtherPerson = p2;
         }
     }
 }

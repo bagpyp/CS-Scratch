@@ -9,12 +9,31 @@ namespace Scratch
     {
         // public DbSet<Group> Groups { get; set; }
         public DbSet<Person> Persons { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         { 
             // what the actual fuck
-            builder.Entity<Person>()
-                .HasMany("Friends")
-                .WithOne("OtherPerson");
+
+            builder.Entity<Friendship>()
+                .HasOne<Person>(f => f.Person)
+                .WithMany(p => p.FriendshipsFrom)
+                .HasForeignKey(f => f.Id);
+            builder.Entity<Friendship>()
+                .HasOne<Person>(f => f.OtherPerson)
+                .WithMany(s => s.Friendships)
+                .HasForeignKey(f => f.OtherPersonId);
+
+            // builder.Entity<Friendship>()
+            //     .HasOne(xy => xy.OtherPerson)
+            //     .WithMany(x => x.Friendships)
+            //     .HasForeignKey(xy => xy.PersonId)
+            //     .OnDelete(DeleteBehavior.NoAction);
+
+            // builder.Entity<Friendship>()
+            //     .HasOne(xy => xy.Person)
+            //     .WithMany(y => y.Friendships)
+            //     .HasForeignKey(xy => xy.OtherPersonId);
+
         }
         public ScratchContext(DbContextOptions<ScratchContext> options)
             : base(options)

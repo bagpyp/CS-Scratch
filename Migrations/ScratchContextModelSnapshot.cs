@@ -18,6 +18,24 @@ namespace Scratch.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("Scratch.Friendship", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OtherPersonId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OtherPersonId");
+
+                    b.ToTable("Friendships");
+                });
+
             modelBuilder.Entity("Scratch.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -26,34 +44,38 @@ namespace Scratch.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("OtherPersonId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("OtherPersonId");
 
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("Scratch.Person", b =>
+            modelBuilder.Entity("Scratch.Friendship", b =>
                 {
+                    b.HasOne("Scratch.Person", "Person")
+                        .WithMany("FriendshipsFrom")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Scratch.Person", "OtherPerson")
-                        .WithMany("Friends")
+                        .WithMany("Friendships")
                         .HasForeignKey("OtherPersonId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("OtherPerson");
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("Scratch.Person", b =>
                 {
-                    b.Navigation("Friends");
+                    b.Navigation("Friendships");
+
+                    b.Navigation("FriendshipsFrom");
                 });
 #pragma warning restore 612, 618
         }

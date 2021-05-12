@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scratch 
 {
@@ -12,7 +11,6 @@ namespace Scratch
         // public int Id { get; set; }
         public List<Person> People { get; set; } = new();
 
-        // [NotMapped]
         public int[,] Graph { get; set; } 
 
         // methods
@@ -81,7 +79,7 @@ namespace Scratch
                 for (int j = 0; j < Count(); j++) 
                 {
                     
-                    if (People[i].Friends.Contains(People[j]))
+                    if (People[i].Friendships.Contains(new Friendship(People[i],People[j])))
                     {
                         Graph[i,j] = 1;
                     }
@@ -153,7 +151,7 @@ namespace Scratch
             {
                 for (int j = 0; j < k; j++) 
                 {
-                    if (i!=j && people[i].Friends.Contains(people[j])) 
+                    if (i!=j && people[i].Friendships.Contains(new Friendship(People[i],People[j])))
                         Graph[i,j] = 1;
                     else
                         Graph[i,j] = 0;

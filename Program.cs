@@ -23,13 +23,13 @@ namespace Scratch
 
             group.RandomizeFriendships();
             
-            foreach (Person p in group.People) 
-            {
-                context.Add(p);
-            }
-            await context.SaveChangesAsync();
+            // foreach (Person p in group.People) 
+            // {
+            //     context.Add(p);
+            // }
+            // await context.SaveChangesAsync();
             group.Show();
-            Console.WriteLine($"\n{k} people successfully added to database");
+            // Console.WriteLine($"\n{k} people successfully added to database");
         }
     }
 }
